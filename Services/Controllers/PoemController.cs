@@ -17,5 +17,16 @@ namespace Services.Controllers
                 return originalList.OrderByDescending(x=>x.Created).ToList();
             }            
         }
+
+        [HttpGet]
+        [Route("total")]
+        public int GetTotal()
+        {
+            using (var appCon = new AppDbContext())
+            {
+                var total = appCon.Poems.Count();
+                return total;
+            }
+        }
     }
 }

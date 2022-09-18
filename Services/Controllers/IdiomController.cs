@@ -27,5 +27,16 @@ namespace Services.Controllers
             return helper.GetByStudyHistory<Idiom>(UserId, needMoreRepetition, backDays, KnowledgeType.Idiom);
 
         }
+
+        [HttpGet]
+        [Route("total")]
+        public int GetTotal()
+        {
+            using (var appCon = new AppDbContext())
+            {
+                var total = appCon.Idioms.Count();
+                return total;
+            }
+        }
     }
 }
