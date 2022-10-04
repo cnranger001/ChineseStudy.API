@@ -16,8 +16,8 @@ namespace Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server = .; Database = ChineseStudy; Integrated Security=True");
-           optionsBuilder.UseSqlServer("Server = 124.70.79.233; Database = ChineseStudy; user=admin; password=123");
+         //   optionsBuilder.UseSqlServer("Server = .; Database = ChineseStudy; Integrated Security=True");
+           optionsBuilder.UseSqlServer("Server = 124.70.79.233; Database = ChineseStudy; user=sa; password=jane0312");
 
         }
 
