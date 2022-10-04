@@ -28,7 +28,6 @@ namespace Services.Controllers
 
         }
 
-
         [HttpGet]
         [Route("relatedidioms")]
         public IEnumerable<Idiom> GetRelatedIdioms(int id)
