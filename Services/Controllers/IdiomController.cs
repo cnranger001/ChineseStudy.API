@@ -8,6 +8,25 @@ namespace Services.Controllers
     public class IdiomController : ControllerBase
     {
         [HttpGet]
+        [Route("singleidiom")]
+        public Idiom GetSingleIdiom(string name)
+        {
+            using (var appCon = new AppDbContext())
+            {
+                var idiom = appCon.Idioms.FirstOrDefault(x => x.Name == name);
+
+                if (idiom == null)
+                {
+                    return new Idiom() { Name = name };
+                }
+                else
+                {
+                    return idiom;
+                }
+            }
+        }
+
+        [HttpGet]
         [Route("all")]
         public IEnumerable<Idiom> GetIdioms()
         {
@@ -27,6 +46,7 @@ namespace Services.Controllers
             return helper.GetByStudyHistory<Idiom>(UserId, needMoreRepetition, backDays, KnowledgeType.Idiom);
 
         }
+
 
         [HttpGet]
         [Route("relatedidioms")]

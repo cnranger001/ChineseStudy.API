@@ -4,3 +4,6 @@
 Services/Services.csproj.user
 *.user
 *.pubxml
+Services/AppDbContext.cs
+Services/AppDbContext.cs
+Entities/AppDbContext.cs
