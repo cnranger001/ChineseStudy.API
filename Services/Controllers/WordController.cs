@@ -49,6 +49,42 @@ namespace Services.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("alltags")]
+        public IEnumerable<string> GetAllTags()
+        {
+            using (var appCon = new AppDbContext())
+            {
+                var tags = appCon.Words.Select(x=>x.Tags);
+
+                List<string> result = new List<string>();
+
+                foreach (var item in tags)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        if (item.Contains("，"))
+                        { 
+                           foreach (var tag in item.Split('，'))
+                            {
+                                if (!result.Contains(tag))
+                                    { result.Add(tag); }                       
+                            }
+                        }
+                        else
+                        {
+                            if (!result.Contains(item)) 
+                            { result.Add(item); }                  
+                        }
+                    }                   
+                }
+
+                return result;
+            }
+        }
+
+
         [HttpGet]
         [Route("relatedwords")]
         public IEnumerable<Word> GetRelatedWords(int id)
