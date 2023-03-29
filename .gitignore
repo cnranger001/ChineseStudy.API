@@ -7,3 +7,4 @@ Services/Services.csproj.user
 Services/AppDbContext.cs
 Services/AppDbContext.cs
 Entities/AppDbContext.cs
+Services/Services.csproj.user

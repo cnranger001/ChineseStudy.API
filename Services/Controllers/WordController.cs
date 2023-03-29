@@ -38,12 +38,12 @@ namespace Services.Controllers
         }
 
         [HttpGet]
-        [Route("{tags}")]
-        public IEnumerable<Word> Get(string tags)
+        [Route("{tag}")]
+        public IEnumerable<Word> Get(string tag)
         {
             using (var appCon = new AppDbContext())
             {
-                var originalList = appCon.Words.Where(x => x.Tags == tags);
+                var originalList = appCon.Words.Where(x => x.Tags.Contains("，") ? x.Tags.Contains(tag) : x.Tags == tag);
 
                 return originalList.ToList();
             }
