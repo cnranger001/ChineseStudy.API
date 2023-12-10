@@ -2,6 +2,9 @@
 using System.Net;
 using System;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Collections;
+using System.Numerics;
 
 namespace Entities
 {
@@ -16,7 +19,8 @@ namespace Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
+            //for a new computer, please get connection string data from 1047860503 qq mail box, searching "AppDbContext"
+
 
         }
 
