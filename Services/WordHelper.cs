@@ -16,42 +16,46 @@ namespace Services
                 if (backDays > 1)
                 {
                     history = appCon.StudyHistory.Where(x => x.UserId == UserId && x.KnowledgeType == knowledgeType &&
-                  x.StudyTime >= DateTime.Today.AddDays(-backDays) && x.StudyTime < DateTime.Today.AddDays(-backDays + 1)).ToList();
+                    x.StudyTime >= DateTime.Today.AddDays(-backDays) && x.StudyTime < DateTime.Today.AddDays(-backDays + 1)).ToList();
                 }
                 else
                 {
                     history = appCon.StudyHistory.Where(x => x.UserId == UserId && x.KnowledgeType == knowledgeType &&
-                  x.StudyTime >= DateTime.Today.AddDays(-backDays) && x.StudyTime < DateTime.Now).ToList();
+                    x.StudyTime >= DateTime.Today.AddDays(-backDays) && x.StudyTime < DateTime.Now).ToList();
                 }
 
-                if (history.Any())
+                if (!history.Any())
                 {
-                    var latestHistory = new List<StudyHistory>();
-                    var groups = history.GroupBy(x => x.KnowledgeId);
-                    foreach (var group in groups)
-                    {
-                        StudyHistory sh = group.OrderByDescending(x => x.StudyTime).First();
-
-                        if (sh.NeedMoreRepetition == needMoreRepetition)
-                            latestHistory.Add(sh);
-                    }
-
-                    if (typeof(T) == typeof(Idiom))
-                    {
-                        originalList = appCon.Idioms.Where(x => latestHistory.Select(h => h.KnowledgeId).Contains(x.Id)).ToList() as List<T>;
-                    }
-                    if (typeof(T) == typeof(Word))
-                    {
-                        originalList = appCon.Words.Where(x => latestHistory.Select(h => h.KnowledgeId).Contains(x.Id)).ToList() as List<T>;
-                    }
-                    if (typeof(T) == typeof(Poem))
-                    {
-                        originalList = appCon.Poems.Where(x => latestHistory.Select(h => h.KnowledgeId).Contains(x.Id)).ToList() as List<T>;
-                    }
+                    history = appCon.StudyHistory.Where(x => x.UserId == UserId && x.KnowledgeType == knowledgeType &&
+                    x.StudyTime < DateTime.Today.AddDays(-backDays)).OrderBy(x=>x.StudyTime).Take(20).ToList();
                 }
+
+                var latestHistory = new List<StudyHistory>();
+                var groups = history.GroupBy(x => x.KnowledgeId);
+                foreach (var group in groups)
+                {
+                    StudyHistory sh = group.OrderByDescending(x => x.StudyTime).First();
+
+                    if (sh.NeedMoreRepetition == needMoreRepetition)
+                        latestHistory.Add(sh);
+                }
+
+                if (typeof(T) == typeof(Idiom))
+                {
+                    originalList = appCon.Idioms.Where(x => latestHistory.Select(h => h.KnowledgeId).Contains(x.Id)).ToList() as List<T>;
+                }
+                if (typeof(T) == typeof(Word))
+                {
+                    originalList = appCon.Words.Where(x => latestHistory.Select(h => h.KnowledgeId).Contains(x.Id)).ToList() as List<T>;
+                }
+                if (typeof(T) == typeof(Poem))
+                {
+                    originalList = appCon.Poems.Where(x => latestHistory.Select(h => h.KnowledgeId).Contains(x.Id)).ToList() as List<T>;
+                }
+
             }
 
-            return originalList.OrderBy(x=>x.Created);
+            return originalList.OrderBy(x => x.Created);
         }
 
 
@@ -61,7 +65,7 @@ namespace Services
             {
                 Word update = app.Words.FirstOrDefault(x => x.Name == word.Name || x.Id == word.Id);
 
-                if (update == null) 
+                if (update == null)
                 {
                     update = new Word();
                     update.Name = word.Name;
@@ -97,7 +101,7 @@ namespace Services
                             relatedWord.Name = w;
                             relatedWord.Sentence = word.Sentence;
                             relatedWord.RelatedWords = update.Name;
-                          
+
                             app.Words.Add(relatedWord);
                         }
                     }
@@ -112,10 +116,10 @@ namespace Services
                 if (!string.IsNullOrEmpty(word.Poems)) update.Poems = word.Poems.Trim();
                 if (!string.IsNullOrEmpty(word.Tags)) update.Tags = word.Tags.Trim();
                 if (word.IsQiao != null) update.IsQiao = word.IsQiao;
-               // if (update.IsQiao == "null") update.IsQiao = null; 
+                // if (update.IsQiao == "null") update.IsQiao = null; 
 
-                update.LastUpdated = DateTime.Now;                           
-                
+                update.LastUpdated = DateTime.Now;
+
                 app.SaveChanges();
 
                 return update.Id;
