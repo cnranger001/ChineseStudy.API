@@ -67,6 +67,20 @@ namespace Services.Controllers
             }
         }
 
+        [HttpPut]
+        public void UpdateIdiomStory(int id, string story)
+        {
+            using (var appCon = new AppDbContext())
+            {
+                var rootIdiom = appCon.Idioms.FirstOrDefault(x => x.Id == id);
+
+                rootIdiom.Story = story;
+                rootIdiom.LastUpdated = DateTime.Now;
+
+                appCon.SaveChanges();
+            }
+        }
+        
         [HttpPost]
         public void UpdateRelatedIdioms(int id, string relatedIdioms)
         {
