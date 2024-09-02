@@ -29,6 +29,7 @@ namespace Entities
         public string? Tags { get; set; }
 
         public bool? IsQiao { get; set; }
+        public string? ImageUrl { get; set; }
 
     }
 

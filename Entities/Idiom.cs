@@ -14,6 +14,8 @@ namespace Entities
         public string? RelatedIdioms { get; set; }
         public string? Story { set; get; }
         public string? Tags { get; set; }
+
+        public string? ImageUrl { get; set; }
   
     }
 }
