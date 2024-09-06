@@ -12,7 +12,8 @@ namespace Entities
     {
         Word,
         Idiom,
-        Poem
+        Poem,
+        Article
     }
 
     [Table("StudyHistory", Schema = "dbo")]
