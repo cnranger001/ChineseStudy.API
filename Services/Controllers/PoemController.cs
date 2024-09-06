@@ -8,6 +8,7 @@ namespace Services.Controllers
     public class PoemController : ControllerBase
     {
         [HttpGet]
+        [Route("all")]
         public IEnumerable<Poem> GetPoems()
         {
             using (var appCon = new AppDbContext())
@@ -19,12 +20,41 @@ namespace Services.Controllers
         }
 
         [HttpGet]
-        [Route("total")]
-        public int GetTotal()
+        [Route("singlepoem")]
+        public Poem GetSinglePoem(string name)
         {
             using (var appCon = new AppDbContext())
             {
-                var total = appCon.Poems.Count();
+                var poem = appCon.Poems.FirstOrDefault(x => x.Name == name);
+
+                if (poem == null)
+                {
+                    return new Poem() { Name = name };
+                }
+                else
+                {
+                    return poem;
+                }
+            }
+        }
+
+        [HttpGet]
+        public IEnumerable<Poem> Get(int UserId, bool needMoreRepetition, int backDays)
+        {
+            var helper = new WordHelper();
+
+            return helper.GetByStudyHistory<Poem>(UserId, needMoreRepetition, backDays, KnowledgeType.Poem);
+
+        }
+
+        [HttpGet]
+        [Route("total")]
+        public int GetTotal(int userId)
+        {
+            using (var app = new AppDbContext())
+            {
+                var total = app.StudyHistory.Where(x => x.UserId == userId && x.KnowledgeType == KnowledgeType.Poem).Select(x => x.KnowledgeId).Distinct().Count();
+
                 return total;
             }
         }

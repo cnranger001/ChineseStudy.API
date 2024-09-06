@@ -27,7 +27,7 @@ namespace Services
                 if (!history.Any())
                 {
                     history = appCon.StudyHistory.Where(x => x.UserId == UserId && x.KnowledgeType == knowledgeType &&
-                    x.StudyTime < DateTime.Today.AddDays(-backDays)).OrderBy(x=>x.StudyTime).Take(20).ToList();
+                    x.StudyTime < DateTime.Today.AddDays(-backDays)).OrderByDescending(x=>x.StudyTime).Take(20).ToList();
                 }
 
                 var latestHistory = new List<StudyHistory>();

@@ -130,13 +130,16 @@ namespace Services.Controllers
 
         [HttpGet]
         [Route("total")]
-        public int GetTotal()
-        {
-            using (var appCon = new AppDbContext())
+        public int GetTotal(int userId)
+        {           
+            using (var app = new AppDbContext())
             {
-                var total = appCon.Idioms.Count();
+                var total = app.StudyHistory.Where(x => x.UserId == userId && x.KnowledgeType == KnowledgeType.Idiom)
+                    .Select(x => x.KnowledgeId).Distinct().Count();
+
                 return total;
-            }
+            }               
+           
         }
     }
 }
